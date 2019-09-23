@@ -1,0 +1,84 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<iostream>
+#include<math.h>
+using namespace std;
+void root()
+{
+	int a, b, c;
+	cout << "请输入二次项系数a,一次项系数b及常数项c" << endl;
+	cin >> a >> b >> c;
+	int d = b * b - 4 * a*c; //std::cout << d << endl;
+	if (d < 0) { cout << "该方程无实数根" << endl; }
+	else
+	{
+		double e = sqrt(d); //std::cout << e << endl;
+		int f = 0 - b, g = 2 * a;// std::cout << f<<"  "<< g << endl;
+		double x1 = (f + e) / g, x2 = (f - e) / g;// std::cout << x1<<"  "<< x2 << endl;
+		if (d == 0) { cout << "该方程有且仅有一个实数根" << x1 << endl; }
+		if (d > 0) { cout << "该方程有两个实数根" << x1 << "," << x2 << endl; }
+	}
+	system("pause");
+}
+void area()
+{
+	cout << "请输入三角形三边长" << endl;
+	float a, b, c;
+	cin >> a >> b >> c;
+	if ((a + b) <= c || (a + c <= b) || (b + c) <= a)cout << "这三条边无法构成三角形" << endl;
+	else
+	{
+		float C = (a + b + c) / 2;// cout << C << endl;
+		float R = C * (C - a)*(C - b)*(C - c); //cout << R << endl;
+		float S = sqrt(R);
+		cout << "三角形面积为" << S << endl;
+	}
+	system("pause");
+}
+void data()
+{
+	cout << "请输入年 月 日" << endl;
+	int a, b, c, i=0,day,week;
+	cin >> a >> b >> c;
+	if (b > 12 || c > 31)cout << "输入错误" << endl;
+	else
+	{
+		switch (b)
+		{
+		case 12:i = i + 30;
+		case 11:i = i + 31;
+		case 10:i = i + 30;
+		case 9:i = i + 31;
+		case 8:i = i + 31;
+		case 7:i = i + 30;
+		case 6:i = i + 31;
+		case 5:i = i + 30;
+		case 4:i = i + 31;
+		case 3:i = i + 28;
+		case 2:i = i + 31;
+		case 1:;
+		default:
+			break;
+		}
+		day = i + c;
+		if (a % 4 == 0)
+		{
+			if (a % 100 == 0)
+			{
+				if (a % 400 == 0)day++;
+			}
+			else day++;
+		}
+	}
+	week = (day/7)+1;
+	cout << "这一天是第" << day << "天" << "第" << week << "周" << endl;
+	system("pause");
+}
+int main()
+{
+	root();
+	area();
+	data();
+	return 0;
+}
+
