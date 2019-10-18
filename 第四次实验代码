@@ -1,0 +1,246 @@
+01 #include <iostream>
+02 #include<iomanip>
+03 using namespace std;
+04 int main()
+05 {   char c ;                                  		//定义变量c、a、f的值
+06     int a ;
+07     float f ;
+08     cin>>c>>a>>f ;                           		//输入变量c、a、f的值
+09     a=a+c;
+10     f=f+2*a;
+11     cout<<setiosflags(ios::fixed);
+12     cout<<"c="<<c<<"  a="<<a<<"  f="<<setprecision(1)<<f<<endl ;  	//输出变量c、a、f的值
+13     return 0;
+14 }
+15 #include <stdio.h>
+16 int main()
+17 {   char c;                            	/*定义变量c、a、f */
+18     int a; 
+19     float f;
+20     scanf("%c%d%f",&c,&a,&f);             	/*输入变量c、a、f的值*/
+21     a=a+c;     
+22     f=f+2*a;
+23     printf("c=%c a=%d  f=%.1f\n",c,a,f);      	/*输出变量c、a、f的值*/
+24     return 0;
+25 }
+
+01 #include <iostream>
+02 using namespace std;    		//using声明使用一个完整的名字空间std，C++中提供的名字
+03 //空间std涵盖了所有标准C++的定义和声明
+04 const int M = 200;
+05 namespace one          		//定义一个名字空间one，里面有1个常量M和1个变量inf
+06 {
+07 const int M = 200;
+08 int inf = 10;
+09 }                   		//后面未加分号
+10 namespace two         		//定义一个名字空间two，里面有2个变量：x和inf
+11 {
+12 int x;
+13 int inf = -100;
+14 }                   		//后面未加分号
+15 using namespace two;   		//方法1：using声明使用一个完整的名字空间one
+16 int  main()
+17 {
+18     using two::x;       		//方法3：using声明仅使用名字空间two中的内容x
+19     x = -100;            		//直接访问，相当于two::x=-100;
+20     cout << inf << endl;    		//using声明使用了整个one，其所有成员直接访问
+21     cout << M << endl;
+22     two::inf *= 2;         		//方法2：使用名字空间名::局部内容名操作未使用using声明的内容
+23     cout << two::inf << endl; 	//同样是two中的内容，但是访问方式不一样
+24     cout << x << endl;      	//已用using声明了two中内容x，可以直接访问
+25 
+26     getchar();
+27     getchar();
+28 
+29     return  0;
+30 }
+
+01 //example2_01.cpp：名字空间使用示例
+02 #include <iostream>
+03 using namespace std;    	
+04 
+05 namespace one          		
+06 {
+07 const int M = 200;
+08 int inf = 10;
+09 }                   		
+10 namespace two         		
+11 {
+12 int x;
+13 int inf = -100;
+14 }                   		
+15 using namespace one;   		
+16 int  main()
+17 {
+18     using two::x;       		
+19     x = -100;            		
+20     cout << inf << endl;    		
+21     cout << one::M << endl;
+22     two::inf *= 2;         		
+23     cout << two::inf << endl; 	
+24     cout << x << endl;      	
+25     getchar();
+26     return  0;
+27 }
+
+01 //example2_07.cpp
+02 #include <iostream>
+03 using namespace std;
+04 void Fun(int i, int j = 5, int k = 10);  
+05 int main()
+06 {
+07 	Fun(20);                    	
+08 									
+09 	Fun(20, 30);                 	
+10 	Fun(20, 30, 40);               
+11 	getchar();
+12 	return 0;
+13 }
+14 void Fun(int i, int j, int k)         
+15 {
+16 	cout << i << "  " << j << "  " << k << endl;
+17 }
+
+01 //example2_07.cpp  参数改为int i=1,int j=5,int k=10
+02 #include <iostream>
+03 using namespace std;
+04 void Fun(int i=1, int j=5, int k = 10);  
+05 int main()
+06 {
+07 	Fun(20);                    	
+08 								
+09 	Fun(20, 30);                 	
+10 	Fun(20, 30, 40);               	
+11 	getchar();
+12 	return 0;
+13 }
+14 void Fun(int i, int j, int k)         
+15 {
+16 	cout << i << "  " << j << "  " << k << endl;
+17 }
+
+01 //example2_08_1.cpp 
+02 #include <iostream>
+03 using namespace std;
+04 #define  Multiply(x,y)  （x）*(y)   
+05 int  main()
+06 {
+07 	int a = Multiply(3 + 4, 2 + 3);  
+08 	cout << "a=" << a << endl;
+09 	getchar();
+10 	return 0;
+11 }
+
+01 //example2_09.cpp
+02 #include <iostream>
+03 using namespace std;
+04 int square(int x)                         	
+05 {
+06     return x * x;
+07 }
+08 float square(float x)                       	
+09 {
+10     return x * x;
+11 }
+12 double square(double x = 1.5)                 	
+13 {
+14     return x * x;
+15 }
+16 int main()
+17 {
+18     cout << "square()=" << square() << endl;       	
+19     cout << "square(10)=" << square(10) << endl;    	
+20     cout << "square(2.5f)=" << square(2.5f) << endl;  	
+21     cout << "square(1.1)=" << square(1.1) << endl;   	
+22     return 0;
+23 }
+
+01 //example2_10.cpp
+02 #include <iostream>
+03 using namespace std;
+04 int x = 5, y = 10;
+05 int &r=x ;                                     	
+06 void print()                                    	
+07 {
+08     cout << "x=" << x << " y=" << y << " r=" << r << endl;  	
+09     cout << "Address of x " << &x << endl;        	
+10     cout << "Address of y " << &y << endl;          	
+11     cout << "Address of r " << &r << endl;       		
+12 }
+13 int main()
+14 {
+15     print();                                   	
+16     r = y;                                     	
+17     //ָһʇr؄ѤΪѤyՄѰû
+18     y = 100;                                  	
+19     print();                                  	
+20     x = 200;                                    ֵ
+21     print();                                  	
+22     getchar();
+23     return 0;
+24 }
+
+01 //example2_11.cpp
+02 #include <iostream>
+03 using namespace std;
+04 void swap(int x, int &y)                	
+05 
+06 {
+07     int t = x;                         	
+08     x = y;                            	
+09     y = t;                            	
+10 }
+11 int main()
+12 {
+13     int a = 3, b = 5, c = 10, d = 20;
+14     cout << "a=" << a << "  b=" << b << endl; 	
+15     swap(a, b);                       	
+16     //int &x=a; int &y=b;
+17     cout << "a=" << a << "  b=" << b << endl; 	
+18     cout << "c=" << c << "  d=" << d << endl; 	
+19     swap(c, d);                      	
+20     //int &x=c; int &y=d; 
+21     cout << "c=" << c << "  d=" << d << endl; 	
+22     getchar();
+23     return 0;
+24 }
+
+01 //example2_13.cpp
+02 #include <iostream>
+03 using namespace std;
+04 int& Fun(const int &x, int &y, int z)   
+05 {
+06     z++;                       
+07     y = x + y + z;                   
+08     return y;                   
+09 }
+10 int main()
+11 {
+12     int a = 1, b = 2, c = 3, d = 0;
+13     cout << "a=" << a << " b=" << b << " c=" << c << " d=" << d << endl;
+14     Fun(a, b, c);              
+15     cout << "a=" << a << " b=" << b << " c=" << c << " d=" << d << endl;
+16     d = Fun(a, b, c);             
+17     cout << "a=" << a << " b=" << b << " c=" << c << " d=" << d << endl;
+18     Fun(a, b, c) = 20;            
+19     cout << "a=" << a << " b=" << b << " c=" << c << " d=" << d << endl;
+20     getchar();
+21     return 0;
+22 }
+
+01 //example2_14.cpp
+02 #include <iostream>
+03 using namespace std;
+04 int main()
+05 {
+06     void *vp;
+07     char c = 'A';
+08     short int x = 97;
+09     vp = &c;             		
+10     cout << *(char *)vp << "  " << *(short int*)vp << endl;
+11     vp = &x;             	
+12    cout << *(short int *)vp << "  " << *(char*)vp << endl;
+13    //cout << *vp << endl;
+14    getchar();
+15    return  0;
+16}
