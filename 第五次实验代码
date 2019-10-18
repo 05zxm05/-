@@ -1,0 +1,128 @@
+编程1先分析程序，写出运行结果，再与正确结果比对
+1.	运行结果：23.56 10 90 Enter
+2.	运行结果：100 100 1 100 3 4 0 0 1 100 3 4
+3.	运行结果：::i=0 i=7 ::i=1 i=5 ::i=1 i=6 ::i=100
+4.	运行结果：X=50.6 y=10 z=A
+          X=216.34 y=10 z=A
+          X=216.34 y=2 z=A
+          X=216.34 y=2 z=E
+5.	运行结果：500 1000 0 500 1500 0 500 2000 2000 500 200 2000
+6.	运行结果：x=35 y=25
+
+
+01 #include<iostream>
+02 using namespace std;
+03 inline int add(int x, int y)
+04 {
+05     return (x)+(y);
+06 }
+07 int main()
+08 {
+09     int x, y, sum;
+10     cout << "请输入x和y的值" << endl;
+11     cin >> x >> y;
+12     sum = add(x, y);
+13     cout << sum;
+14     getchar();
+15     getchar();
+16     return 0;
+17 }
+编程2
+01 #include<iostream>
+02 using namespace std;
+03 inline double square(float r)
+04 {
+05     return r * r*3.14;
+06 }
+07 inline double length(float r)
+08 {
+09     return 2 * 3.14*r;
+10 }
+11 int main()
+12 {
+13     float r;
+14     cout << "请输入圆的半径r=";
+15     cin >> r;
+16     cout << endl;
+17     cout << "圆的周长为" << length(r)<<endl;
+18     cout << "圆的面积为" << square(r)<<endl;
+19     getchar();
+20     getchar();
+21     return 0;
+22 }
+
+编程3
+01 #include<iostream>
+02 using namespace std;
+03 int main()
+04 {
+05     int *ptr,a=0,b=0;
+06     ptr = new int[20];
+07     cout << "请输入含有20个数字的数组：";
+08     for (int i = 0; i < 20; i++)
+09         cin >> ptr[i];
+10     for (int i = 0; i < 20; i++)
+11     {
+12         if (ptr[i] < 0)
+13             a++;
+14         if (ptr[i] > 0)
+15             b++;
+16     }
+17     cout << "该数组负数个数为：" << a;
+18     cout << "该数组整数个数为：" << b;
+19     getchar();
+20     getchar();
+21     return 0;
+22 
+23 }
+编程4
+01 #include<iostream>
+02 using namespace std;
+03 double checkAgeScore(int age, double score)
+04 {
+05     if (age < 16 || age>25) throw age;
+06     if (score < 0 || score>5) throw score;
+07     return score;
+08 }
+09 int main()
+10 {
+11     char a[10];
+12     cout << "请输入学生姓名：";
+13     cin >> a;
+14     int age = 0;
+15     double score = 0;
+16     cout << "请输入学生成绩";
+17     cin >> score;
+18     cout << "请输入学生年龄：";
+19     cin >> age;
+20 
+21     try
+22     {
+23         checkAgeScore(age, score);
+24     }
+25     catch (int)
+26     {
+27         cout << "Wrong age!" << endl;
+28         cout << "please put in the right age:";
+29         cin >> age;
+30 
+31     }
+32     try
+33     {
+34         checkAgeScore(age, score);
+35     }
+36     catch (double)
+37     {
+38         cout << "Wrong score!" << endl;
+39         cout << "please put in the right score:";
+40         cin >> score;
+41 
+42     }
+43     cout << "calculate finished." << endl;
+44     cout << a << " " << age << " " << 100 * (score / 5) << endl;
+45     getchar();
+46     getchar();
+47     return 0;
+48 
+49 
+50 }
