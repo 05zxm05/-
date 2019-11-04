@@ -1,0 +1,109 @@
+#include <iostream>
+
+  #include<string.h>
+  using namespace std;
+  class student
+  {
+  private:
+      char *name;
+      char id[16];
+     int age;
+     string adress;
+ public:
+     student();
+    student(char name[],char id[],int age, string adress);
+     student(const student& eis);
+     ~student();
+     char* serchname();
+     char* serchid();
+     int serchage();
+     string serchadress();
+     void print();
+     void change(char *name, char id[16], int age, string adress);
+     void change(char *name, int i);
+     void change(char id[16]);
+     void change(int age);
+     void change(string adress);
+ };
+ student::student()
+ {
+     char *b = (char*)"unk222";
+     this->name= b;
+     char a[16]="********";
+     strcpy(this->id,a);
+     age = 1;
+     this->adress = "********";
+     cout << "已完成无参初始化"<<endl;
+ }
+ student::student(char name[], char id[], int age, string adress)
+ {
+     this->name = name;
+     strcpy(this->id, id);
+     this->age = age;
+     this->adress = adress;
+     cout << "已完成有参初始化"<<endl;
+ }
+ student::student(const student& eis)
+ {
+     cout << "已调用借用初始化"<<endl;
+}
+ student::~student()
+ {
+     cout << "已删除类"<<endl;
+ }
+ char* student::serchname()
+ {
+     return this->name;
+ }
+ char* student::serchid()
+ {
+     return this->id;
+ }
+ int student::serchage()
+{
+     return this->age;
+ }
+ string student::serchadress()
+ {
+     return this->adress;
+ }
+ void student::print()
+ {
+     cout << endl << "        name:" << name<< "          id:" << id<< "      age:" << age << "          adress:" << this->adress.c_str();
+
+     cout << endl;
+ }
+ void student::change(char*name, char id[16], int age, string adress)
+ {
+     this->name = name;
+     strcpy(this->id, id);
+     this->age = age;
+     this->adress = adress;
+ }
+ void student::change(char *name, int i)
+{
+    this->name = name;
+ }
+ void student::change(char id[16])
+ {
+     strcpy(this->id, id);
+ }
+ void student::change(int age)
+ {
+     this->age = age;
+ }
+ void student::change(string adress)
+ {
+     this->adress = adress;
+ }
+int main()
+ {
+     student student1;
+     char name[]="wang";
+     student student2(name,(char*)"201811990132",13,"榆树街26号");
+     student2.print();
+     student student3(student2);
+     student3.print();
+     system("pause");
+     return 0;
+ }
