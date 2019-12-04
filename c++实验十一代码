@@ -1,0 +1,310 @@
+论证：一个参数为base的函数，传入derived应该成功执行，相反，一个参数为derived的函数，不可传入base：
+#include <iostream>
+#include <stdio.h>
+
+class base
+{
+public:
+	base()
+		:baseName(""), baseData(0)
+	{}
+
+	base(std::string bn, int bd)
+		:baseName(bn), baseData(bd)
+	{}
+
+	std::string getBaseName() const
+	{
+		return baseName;
+	}
+
+	int getBaseData()const
+	{
+		return baseData;
+	}
+
+private:
+	std::string baseName;
+	int baseData;
+};
+
+class derived :public base
+{
+public:
+	derived() :base(), derivedName("")
+	{}
+	derived(std::string bn, int bd, std::string dn)
+		:base(bn, bd), derivedName(dn)
+	{}
+	std::string getDerivedName() const
+	{
+		return derivedName;
+	}
+private:
+	std::string derivedName;
+};
+
+void show(std::string& info, const base& b)
+{
+	info.append("Name is ");
+	info.append(b.getBaseName());
+	info.append(", baseData is ");
+	char buffer[10];
+	sprintf(buffer, "%d", b.getBaseData());
+	info.append(buffer);
+}
+
+int main(int argc, char* argv[])
+{
+	base b("test", 10);
+	std::string s;
+	show(s, b);
+	std::cout << s << std::endl;
+	derived d("btest", 5, "dtest");
+	std::string ss;
+	show(ss, d);
+	std::cout << ss << std::endl;
+	return 0;
+}
+对各种形式的继承作出验证：
+class base
+{
+public:
+	std::string testPublic()
+	{
+		return std::string("this is public base");
+	}
+protected:
+	std::string testProtected()
+	{
+		return std::string("this is protected base");
+	}
+private:
+	std::string testPrivate()
+	{
+		return std::string("this is private base");
+	}
+};
+
+class derivedPublic :public base
+{
+public:
+	std::string testPubPublic()
+	{
+		return testPublic() += "in derived";
+	}
+
+	std::string testProPublic()
+	{
+		return testProtected() += "in derived";
+	}
+
+	std::string testPriPublic()
+	{
+		return testPrivate() += "in derived";
+	}
+};
+
+int main(int argc, char* argv[])
+｛
+derivedPublic dpub;
+std::cout << dpub.testPublic() << std::endl;
+｝    //说明testPrivate()不是derived私有函数而是base的私有函数
+这样验证private类型成员无法被继承（public,private,protected）
+下面只要验证 testProtected 能被第三层继承类继承，但是无法被第三层类直接调用就说明是public继承后继承类型为protected，而基类为Public类型成员则即可被继承又可以直接调用。
+#include <iostream>
+#include <string>
+ 
+class base
+{
+  public:
+    std::string testPublic()
+    {
+      return std::string("this is public base");
+    }
+  protected:
+    std::string testProtected()
+    {
+      return std::string("this is protected base");
+    }
+  private:
+    std::string testPrivate()
+    {
+      return std::string("this is private base");
+    }
+};
+ 
+class derivedPublic:public base
+{
+  public:
+    std::string testPubPublic()
+    {
+      return testPublic()+= "in derived";
+    }
+     
+    std::string testProPublic()
+    {  
+      return testProtected()+= "in derived";
+    }
+     
+//    std::string testPriPublic()          
+//    {  
+//      return testPrivate()+= "in derived";
+//    }
+};
+ 
+class deepDerived:public derivedPublic
+{
+  public:
+    std::string deepProtected()
+    {
+      return testProtected() +="in deep";
+    }
+     
+    std::string deepPublic()
+    {
+      return testPublic() +="indeep";
+    }
+};
+ 
+int main(int argc,char* argv[])
+{
+  derivedPublic dpub;
+  std::cout << dpub.testProtected() << std::endl; 
+  deepDerived deepdpub;
+  std::cout<<deepdpub.testPublic() <<std::endl;
+  std::cout<<deepdpub.testProtected() <<std::endl;
+  std::cout<<deepdpub.deepProtected() <<std::endl;
+  std::cout<<deepdpub.deepPublic() <<std::endl;
+}(会出现错误  因此这样就验证了一个是public，一个是protected，protected是不能直接调用的，但是被继承后是可以被public成员调用的。)
+
+
+
+最后的验证：
+#include <iostream>
+#include <string>
+class base
+{
+public:
+	std::string testPublic()
+	{
+		return std::string("this is public base");
+	}
+protected:
+	std::string testProtected()
+	{
+		return std::string("this is protected base");
+	}
+private:
+	std::string testPrivate()
+	{
+		return std::string("this is private base");
+	}
+};
+
+class derivedPublic :public base
+{
+public:
+	std::string testPubPublic()
+	{
+		return testPublic() += "in derived";
+	}
+
+	std::string testProPublic()
+	{
+		return testProtected() += "in derived";
+	}
+
+	//    std::string testPriPublic()          //私有成员并没有被继承下来
+	//    {  
+	//      return testPrivate()+= "in derived";
+	//    }
+};
+
+class deepDerived :public derivedPublic
+{
+public:
+	std::string test()
+	{
+		return testPublic() += "in 3";
+	}
+};
+
+class derivedProtected :protected base
+{
+public:
+	std::string testPubProtected()
+	{
+		return testPublic() += "in derived";
+	}
+
+	std::string testProProtected()
+	{
+		return testProtected() += "in derived";
+	}
+};
+
+class deepDerived2 :public derivedProtected
+{
+public:
+	std::string test()
+	{
+		return testPublic() += "in 3";
+	}
+};
+
+class derivedPrivate :private base
+{
+public:
+	std::string testPubPirvate()
+	{
+		return testPublic() += "in derived";
+	}
+
+	std::string testProPrivate()
+	{
+		return testProtected() += "in derived";
+	}
+
+};
+
+//class deepDerived3:public derivedPrivate
+//{
+//  public:
+//    std::string test()
+//    {
+//      return testPublic() +="in 3";
+//    }
+//};
+
+int main(int argc, char* argv[])
+{
+	derivedPublic dpub;
+	//derivedProtected dpro;
+	//derivedPrivate dpri;
+	std::cout << dpub.testPublic() << std::endl;    //
+	//std::cout<<dpub.testProtected()<<std::endl;  //用户被继承也是无法使用
+	//cout<<dpub.testPrivate()<<std::endl;     //基类都是私有函数
+	std::cout << dpub.testPubPublic() << std::endl;
+	std::cout << dpub.testProPublic() << std::endl;
+	//std::cout<<dpub.testPriPrivate()<<std::endl; //没有被继承
+
+	deepDerived dd;
+	std::cout << dd.test() << std::endl;
+
+	derivedProtected dpro;
+	//std::cout<<dpro.testPublic()<<std::endl;    //变成protected类型
+	std::cout << dpro.testPubProtected() << std::endl;
+	std::cout << dpro.testProProtected() << std::endl;
+
+	deepDerived2 dd2;
+	std::cout << dd2.test() << std::endl;
+
+	derivedPrivate dpri;
+	std::cout << dpri.testPubPirvate() << std::endl;
+	std::cout << dpri.testProPrivate() << std::endl;
+	getchar();
+
+	//  deepDerived3 dd3;
+	//  std::cout<<dd3.test()<<std::endl;
+}
